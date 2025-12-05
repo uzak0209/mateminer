@@ -1,0 +1,29 @@
+# Example Terraform variables file
+# Copy this file to terraform.tfvars and fill in your values
+
+environment = "staging"  # or "production"
+location    = "japaneast"
+
+# PostgreSQL Configuration
+postgres_admin_username = "pgadmin"
+postgres_admin_password = "YourSecurePassword123!"
+postgres_database_name  = "roommate_db"
+
+# Docker Images
+# These should be set by CI/CD pipeline
+# backend_image  = "roommate-backend:latest"
+# frontend_image = "roommate-frontend:latest"
+
+# Application Secrets
+jwt_secret = "your-super-secret-jwt-key-min-32-characters-long"
+
+# Email Configuration (Optional)
+smtp_host     = "smtp.gmail.com"
+smtp_port     = 587
+smtp_user     = "your-email@gmail.com"
+smtp_password = "your-app-password"
+
+# SMS Configuration (Optional - Twilio)
+twilio_account_sid  = "your-twilio-account-sid"
+twilio_auth_token   = "your-twilio-auth-token"
+twilio_phone_number = "+1234567890"
