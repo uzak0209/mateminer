@@ -88,3 +88,5 @@ secrets/
 
 # Uploads
 uploads/
+
+.devcontainer
