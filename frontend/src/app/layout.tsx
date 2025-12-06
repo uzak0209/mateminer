@@ -2,9 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 // 日本語フォント (Noto Sans JP) を適用する場合
 import { Noto_Sans_JP } from "next/font/google";
-
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import { Header, Footer } from "@/components/layout";
 
 const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],

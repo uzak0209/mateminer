@@ -105,3 +105,19 @@ export interface PropertyCandidate {
   myComment?: string;
   partnerComment?: string;
 }
+
+export interface Message {
+  id: string;
+  senderId: string;
+  content: string;
+  timestamp: string; // ISO string
+  isRead: boolean;
+}
+
+// チャットスレッド（対話ごとのまとまり）
+export interface ChatThread {
+  id: string;
+  partner: User; // 会話相手
+  lastMessage: Message;
+  unreadCount: number;
+}

@@ -2,6 +2,7 @@ import { MatchCandidate } from "@/types";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CompatibilityBadge } from "./CompatibilityBadge";
 import { MapPin, GraduationCap } from "lucide-react";
 
@@ -11,18 +12,19 @@ interface UserCardProps {
 
 export function UserCard({ user }: UserCardProps) {
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow">
-      {/* ヘッダー画像エリア（仮でグラデーション） */}
+    <Card className="overflow-hidden hover:shadow-md transition-shadow group">
+      {/* ヘッダー画像エリア */}
       <div className="h-24 bg-gradient-to-r from-blue-400 to-indigo-500 relative">
         <div className="absolute -bottom-10 left-4">
-          {/* アバター画像（なければイニシャル） */}
-          <div className="w-20 h-20 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center text-2xl font-bold text-gray-500">
-            {user.avatarUrl ? (
-              <img src={user.avatarUrl} alt={user.profile?.nickname} className="w-full h-full rounded-full object-cover" />
-            ) : (
-              user.profile?.nickname.slice(0, 1)
-            )}
-          </div>
+          
+          {/* ▼ 修正: Avatarコンポーネントを使用 */}
+          <Avatar className="w-20 h-20 border-4 border-white bg-white">
+            <AvatarImage src={user.avatarUrl} alt={user.profile?.nickname} className="object-cover" />
+            <AvatarFallback className="text-xl font-bold bg-gray-100 text-gray-500">
+              {user.profile?.nickname?.slice(0, 1).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 // src/lib/mock-data.ts
-import { MatchCandidate, PropertyCandidate, User } from '@/types';
+import { ChatThread, Message ,MatchCandidate, PropertyCandidate, User } from '@/types';
 
 // ログイン中の自分（大学生Aくん）
 export const CURRENT_USER: User = {
@@ -129,4 +129,62 @@ export const MOCK_SHARED_PROPERTIES: PropertyCandidate[] = [
     myComment: 'ここが一番コスパ良いと思う',
     partnerComment: '日当たりが気になる...',
   }
+];
+export const MOCK_MESSAGES: Message[] = [
+  {
+    id: "m1",
+    senderId: "u2", // Shoくん (相手)
+    content: "はじめまして！プロフィール見ました。僕も明大前周辺で探していて、ぜひお話ししたいです。",
+    timestamp: "2025-12-05T10:00:00.000Z",
+    isRead: true,
+  },
+  {
+    id: "m2",
+    senderId: "u1", // Kentaくん (自分)
+    content: "こんにちは！マッチありがとうございます。ぜひぜひ。家賃予算も近そうですね。",
+    timestamp: "2025-12-05T10:05:00.000Z",
+    isRead: true,
+  },
+  {
+    id: "m3",
+    senderId: "u2",
+    content: "そうですね！6万円以下だと助かります。ちなみに自炊はよくされますか？",
+    timestamp: "2025-12-05T10:10:00.000Z",
+    isRead: true,
+  },
+  {
+    id: "m4",
+    senderId: "u1",
+    content: "週3くらいです！でも掃除は当番制とかできっちり決めたい派です。",
+    timestamp: "2025-12-05T10:12:00.000Z",
+    isRead: true,
+  },
+  {
+    id: "m5",
+    senderId: "u2",
+    content: "僕もキレイ好きなんで助かります！今週末とか内見行けたりしますか？良さげな物件いくつかピックアップしました。",
+    timestamp: "2025-12-06T09:30:00.000Z",
+    isRead: false,
+  },
+];
+
+export const MOCK_CHATS: ChatThread[] = [
+  {
+    id: "thread1",
+    partner: MOCK_CANDIDATES[0], // Shoくん
+    lastMessage: MOCK_MESSAGES[MOCK_MESSAGES.length - 1],
+    unreadCount: 1,
+  },
+  {
+    id: "thread2",
+    partner: MOCK_CANDIDATES[1], // Mikeくん
+    lastMessage: {
+      id: "m_temp",
+      senderId: "u3",
+      content: "研究室が忙しくて返信遅れました...",
+      timestamp: "2025-12-04T18:00:00.000Z",
+      isRead: true,
+    },
+    unreadCount: 0,
+  },
 ];
