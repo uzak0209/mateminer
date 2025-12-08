@@ -1,0 +1,44 @@
+erDiagram
+    users ||--o{ match_requests_sender : sends
+    users ||--o{ match_requests_receiver : receives
+    match_requests ||--o| matched_pairs : creates
+    matched_pairs ||--o{ messages : has
+    users ||--o{ messages_sender : sends
+    users ||--o{ messages_receiver : receives
+    matched_pairs ||--o{ property_candidates : has
+    property_candidates ||--o{ viewing_schedules : has
+    matched_pairs ||--o| pair_preferences : has
+
+    match_requests {
+        uuid id PK
+        uuid sender_user_id FK
+        uuid receiver_user_id FK
+        string status
+        text message
+        integer compatibility_score
+        datetime expires_at
+        datetime inserted_at
+        datetime updated_at
+    }
+
+    matched_pairs {
+        uuid id PK
+        uuid user1_id FK
+        uuid user2_id FK
+        uuid match_request_id FK
+        string status
+        datetime matched_at
+        datetime dissolved_at
+        datetime inserted_at
+    }
+
+    messages {
+        uuid id PK
+        uuid sender_user_id FK
+        uuid receiver_user_id FK
+        uuid matched_pair_id FK
+        text content
+        boolean is_flagged
+        datetime read_at
+        datetime inserted_at
+    }

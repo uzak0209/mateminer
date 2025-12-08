@@ -1,0 +1,44 @@
+erDiagram
+    users ||--o| profiles : has
+    users ||--o| student_verifications : has
+    users ||--o{ social_connections : has
+    users ||--o| property_preferences : has
+    users ||--o| lifestyles : has
+    users ||--o{ user_interests : has
+    interest_tags ||--o{ user_interests : referenced_by
+    users ||--o{ lifestyle_assessments : has
+
+    users {
+        uuid id PK
+        string email UK
+        string password_hash
+        string phone_number UK
+        boolean phone_verified
+        boolean email_verified
+        boolean is_university_email
+        integer trust_score
+        string status
+        datetime last_login_at
+        datetime inserted_at
+        datetime updated_at
+    }
+
+    profiles {
+        uuid id PK
+        uuid user_id FK
+        string nickname
+        integer age
+        string gender
+        string user_type
+        string university_name
+        string faculty
+        string department
+        integer grade
+        string campus
+        string occupation
+        text bio
+        string video_url
+        string avatar_url
+        datetime inserted_at
+        datetime updated_at
+    }
