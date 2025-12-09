@@ -20,7 +20,7 @@ export default function MessagesPage() {
   return (
     <div className="container mx-auto py-6 px-4 h-[calc(100vh-64px)] max-w-6xl">
       <div className="bg-white border rounded-xl shadow-sm overflow-hidden h-full flex flex-col md:flex-row">
-        
+
         {/* === 左側：チャットリスト === */}
         <div className={cn(
           "w-full md:w-80 border-r flex flex-col bg-gray-50/50",
@@ -29,7 +29,7 @@ export default function MessagesPage() {
           <div className="p-4 border-b bg-white">
             <h2 className="font-bold text-lg">メッセージ</h2>
           </div>
-          
+
           <ScrollArea className="flex-1">
             <div className="flex flex-col">
               {MOCK_CHATS.map((chat) => (
@@ -55,9 +55,9 @@ export default function MessagesPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-baseline mb-1">
                       <span className="font-bold text-sm truncate">{chat.partner.profile?.nickname}</span>
-                        <span className="text-[10px] text-gray-400" suppressHydrationWarning>
-                            {new Date(chat.lastMessage.timestamp).toLocaleDateString()}
-                        </span>
+                      <span className="text-[10px] text-gray-400" suppressHydrationWarning>
+                        {new Date(chat.lastMessage.timestamp).toLocaleDateString()}
+                      </span>
                     </div>
                     <p className="text-xs text-gray-500 truncate">
                       {chat.lastMessage.content}
@@ -79,7 +79,7 @@ export default function MessagesPage() {
             <div className="h-16 border-b flex items-center justify-between px-6 bg-white shrink-0">
               <div className="flex items-center gap-3">
                 {/* スマホ用: 戻るボタン */}
-                <button 
+                <button
                   className="md:hidden text-blue-600 text-sm mr-2"
                   onClick={() => setSelectedChatId(null)}
                 >
@@ -130,8 +130,8 @@ export default function MessagesPage() {
             {/* 入力エリア */}
             <div className="p-4 border-t bg-white shrink-0">
               <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); setInputText(""); }}>
-                <Input 
-                  placeholder="メッセージを入力..." 
+                <Input
+                  placeholder="メッセージを入力..."
                   className="flex-1"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
