@@ -245,6 +245,7 @@ vercel --prod
 
 - [技術スタック選定理由](./TECH_STACK.md)
 - [機能要件定義](./roomshare-requirements.html)
+- [データベース設計書](./docs/database-schema.md) - 27テーブルの詳細仕様
 - API ドキュメント: http://localhost:8080/swagger (開発中)
 
 ## ライセンス
