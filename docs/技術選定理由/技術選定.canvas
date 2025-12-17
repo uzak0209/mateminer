@@ -1,0 +1,24 @@
+{
+	"nodes":[
+		{"id":"e910a6690734d954","type":"group","x":-1020,"y":-680,"width":1642,"height":1580,"label":"backend lang"},
+		{"id":"fe399c7df8eb798b","type":"group","x":-1020,"y":1720,"width":1720,"height":440,"label":"DB"},
+		{"id":"c2ae8643a9ed7a8f","type":"group","x":1040,"y":1720,"width":1720,"height":440,"label":"Connection Protocol"},
+		{"id":"91dd82f2b9c6e3bc","type":"group","x":-1020,"y":1060,"width":1080,"height":440,"label":"ORM"},
+		{"id":"35a3f2148002446f","type":"file","file":"backend lang/C++.md","x":-400,"y":-660,"width":400,"height":400},
+		{"id":"7cc5cc4e25cbf661","type":"file","file":"backend lang/Rust.md","x":-1000,"y":-651,"width":400,"height":400},
+		{"id":"ac2d9af42aeea3f7","type":"file","file":"backend lang/Elixir.md","x":202,"y":-651,"width":400,"height":400},
+		{"id":"10a55b07402e5dcb","type":"file","file":"backend lang/Go.md","x":-1000,"y":-80,"width":400,"height":400},
+		{"id":"8968117ecd912845","type":"file","file":"backend lang/Java.md","x":-400,"y":-80,"width":400,"height":400},
+		{"id":"6e633476cd06f4ed","type":"file","file":"backend lang/Ruby.md","x":202,"y":-80,"width":400,"height":400},
+		{"id":"620fae688027db7d","type":"file","file":"backend lang/Typescript(Nust,Next).md","x":-1000,"y":480,"width":400,"height":400},
+		{"id":"8f942b6d8126fce8","type":"file","file":"orm/go orm/Gorm.md","x":-1000,"y":1080,"width":400,"height":400},
+		{"id":"f4b85a0ff44ab6e5","type":"file","file":"orm/go orm/直SQL.md","x":-360,"y":1080,"width":400,"height":400},
+		{"id":"49e0e886f5ce4695","type":"file","file":"db/MySQL.md","x":-1000,"y":1740,"width":400,"height":400},
+		{"id":"1b808157e158df86","type":"file","file":"db/Postgres.md","x":-360,"y":1740,"width":400,"height":400},
+		{"id":"e178a36a099e77fe","type":"file","file":"db/Redis.md","x":280,"y":1740,"width":400,"height":400},
+		{"id":"ebd0de5f749f0ad8","type":"file","file":"way to connect/HTTP.md","x":2320,"y":1740,"width":400,"height":400},
+		{"id":"ed71949119119544","type":"file","file":"way to connect/WebSocket.md","x":1680,"y":1740,"width":400,"height":400},
+		{"id":"6d9e944ba414f644","type":"file","file":"way to connect/SSE(Server Side Events).md","x":1040,"y":1740,"width":400,"height":400}
+	],
+	"edges":[]
+}

@@ -1,0 +1,40 @@
+{
+	"nodes":[
+		{"id":"e910a6690734d954","type":"group","x":-1020,"y":-680,"width":1642,"height":1580,"label":"backend lang"},
+		{"id":"f34b48745f6a6e20","x":1760,"y":-411,"width":1280,"height":1911,"type":"group","label":"機能要件"},
+		{"id":"9a79d83b04f1cc04","type":"group","x":4160,"y":-660,"width":1372,"height":1100,"label":"algorhythm"},
+		{"id":"fe399c7df8eb798b","type":"group","x":-1020,"y":1720,"width":1720,"height":440,"label":"DB"},
+		{"id":"c2ae8643a9ed7a8f","type":"group","x":4160,"y":1500,"width":1720,"height":440,"label":"Connection Protocol"},
+		{"id":"91dd82f2b9c6e3bc","type":"group","x":-1020,"y":1060,"width":1080,"height":440,"label":"ORM"},
+		{"id":"35a3f2148002446f","type":"file","file":"backend lang/C++.md","x":-400,"y":-660,"width":400,"height":400},
+		{"id":"7cc5cc4e25cbf661","type":"file","file":"backend lang/Rust.md","x":-1000,"y":-651,"width":400,"height":400},
+		{"id":"ac2d9af42aeea3f7","type":"file","file":"backend lang/Elixir.md","x":202,"y":-651,"width":400,"height":400},
+		{"id":"10a55b07402e5dcb","type":"file","file":"backend lang/Go.md","x":-1000,"y":-80,"width":400,"height":400},
+		{"id":"6e633476cd06f4ed","type":"file","file":"backend lang/Ruby.md","x":202,"y":-80,"width":400,"height":400},
+		{"id":"620fae688027db7d","type":"file","file":"backend lang/Typescript(Nust,Next).md","x":-1000,"y":480,"width":400,"height":400},
+		{"id":"8f942b6d8126fce8","type":"file","file":"orm/go orm/Gorm.md","x":-1000,"y":1080,"width":400,"height":400},
+		{"id":"8968117ecd912845","type":"file","file":"backend lang/Java.md","x":-400,"y":-80,"width":400,"height":400},
+		{"id":"f4b85a0ff44ab6e5","type":"file","file":"orm/go orm/直SQL.md","x":-360,"y":1080,"width":400,"height":400},
+		{"id":"49e0e886f5ce4695","type":"file","file":"db/MySQL.md","x":-1000,"y":1740,"width":400,"height":400},
+		{"id":"e178a36a099e77fe","type":"file","file":"db/Redis.md","x":280,"y":1740,"width":400,"height":400},
+		{"id":"1b808157e158df86","type":"file","file":"db/Postgres.md","x":-360,"y":1740,"width":400,"height":400},
+		{"id":"fb54498143712914","type":"file","file":"roomate/相性スコア算出方/ゲールシャープレー.md","x":4220,"y":-640,"width":400,"height":400},
+		{"id":"b5a446a292e6c883","type":"file","file":"roomate/相性スコア算出方/機械学習.md","x":5112,"y":-640,"width":400,"height":400},
+		{"id":"944ef397bf3a99b8","type":"file","file":"roomate/相性スコア算出方/コサイン類似度.md","x":5112,"y":20,"width":400,"height":400},
+		{"id":"390ff2e49c27b3bf","type":"file","file":"roomate/相性スコア算出方/ユークリッド距離.md","x":4220,"y":20,"width":400,"height":400},
+		{"id":"6d9e944ba414f644","type":"file","file":"way to connect/SSE(Server Side Events).md","x":4160,"y":1520,"width":400,"height":400},
+		{"id":"ed71949119119544","type":"file","file":"way to connect/WebSocket.md","x":4800,"y":1520,"width":400,"height":400},
+		{"id":"ebd0de5f749f0ad8","type":"file","file":"way to connect/HTTP.md","x":5440,"y":1520,"width":400,"height":400},
+		{"id":"45d5dfa87814bc58","x":1802,"y":-391,"width":400,"height":400,"type":"file","file":"roomate/backend機能要件/DBの選定.md"},
+		{"id":"9bbb31f272b0991a","x":1780,"y":361,"width":400,"height":400,"type":"file","file":"roomate/backend機能要件/開発手段.md"},
+		{"id":"d7e3d555f8afdde7","x":1802,"y":1080,"width":400,"height":400,"type":"file","file":"roomate/backend機能要件/接続.md"},
+		{"id":"61fd6c36ecf090b9","x":2620,"y":-391,"width":400,"height":400,"type":"file","file":"roomate/backend機能要件/セキュリティ.md"},
+		{"id":"98cb296834cbae80","x":2620,"y":361,"width":400,"height":400,"type":"file","file":"roomate/backend機能要件/基本のAPIサーバー.md"}
+	],
+	"edges":[
+		{"id":"7c8052fdc3ea170e","fromNode":"45d5dfa87814bc58","fromSide":"bottom","toNode":"1b808157e158df86","toSide":"right"},
+		{"id":"0c2b2e91bd7bef85","fromNode":"45d5dfa87814bc58","fromSide":"left","toNode":"e178a36a099e77fe","toSide":"right"},
+		{"id":"b8fdef2aeb7e71aa","fromNode":"d7e3d555f8afdde7","fromSide":"right","toNode":"ebd0de5f749f0ad8","toSide":"top"},
+		{"id":"9e70e52b95143aa6","fromNode":"98cb296834cbae80","fromSide":"left","toNode":"10a55b07402e5dcb","toSide":"right"}
+	]
+}
