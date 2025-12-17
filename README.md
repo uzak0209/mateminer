@@ -24,11 +24,11 @@
 - TanStack Query
 
 ### バックエンド
-- **Go 1.21+** (選定理由: [TECH_STACK.md](./TECH_STACK.md) を参照)
-- Gin Framework
-- GORM (PostgreSQL ORM)
-- JWT認証
-- WebSocket (gorilla/websocket)
+- **Elixir 1.15+ / Phoenix 1.7+** (選定理由: [TECH_STACK.md](./TECH_STACK.md) を参照)
+- Phoenix Framework
+- Ecto (PostgreSQL ORM)
+- Guardian (JWT認証)
+- Phoenix Channels (リアルタイム通信)
 
 ### インフラ
 - **ローカル開発**: Docker Compose
@@ -46,7 +46,7 @@
 - Docker & Docker Compose
 - Make (optional, but recommended)
 - Node.js 20+ (ローカル開発の場合)
-- Go 1.21+ (ローカル開発の場合)
+- Elixir 1.15+ / Erlang 26+ (ローカル開発の場合)
 
 ### クイックスタート
 
@@ -131,7 +131,9 @@ make clean             # コンテナとボリュームをクリーンアップ
 1. **バックエンド開発**
    ```bash
    cd backend
-   go run cmd/api/main.go
+   mix deps.get
+   mix ecto.setup
+   mix phx.server
    ```
 
 2. **フロントエンド開発**
@@ -243,6 +245,7 @@ vercel --prod
 
 - [技術スタック選定理由](./TECH_STACK.md)
 - [機能要件定義](./roomshare-requirements.html)
+- [データベース設計書](./docs/database-schema.md) - 27テーブルの詳細仕様
 - API ドキュメント: http://localhost:8080/swagger (開発中)
 
 ## ライセンス

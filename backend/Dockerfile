@@ -1,57 +1,57 @@
-# Multi-stage build for Go backend
+# Build stage
+FROM elixir:1.15-alpine AS build
 
-# Stage 1: Build
-FROM golang:1.21-alpine AS builder
+# Install build dependencies
+RUN apk add --no-cache build-base git
 
-# Install necessary build tools
-RUN apk add --no-cache git gcc musl-dev
-
-# Set working directory
+# Prepare build dir
 WORKDIR /app
 
-# Copy go mod files
-COPY go.mod go.sum ./
+# Install hex + rebar
+RUN mix local.hex --force && \
+    mix local.rebar --force
 
-# Download dependencies
-RUN go mod download
+# Set build ENV
+ENV MIX_ENV=dev
 
-# Copy source code
+# Install mix dependencies
+COPY mix.exs mix.lock ./
+RUN mix deps.get --only $MIX_ENV
+
+# Copy compile configuration
+COPY config/config.exs config/$MIX_ENV.exs config/
+RUN mix deps.compile
+
+# Compile the project
+COPY lib lib/
+COPY priv priv/
+RUN mix compile
+
+# Development stage
+FROM elixir:1.15-alpine
+
+# Install runtime dependencies
+RUN apk add --no-cache bash postgresql-client
+
+# Install hex + rebar
+RUN mix local.hex --force && \
+    mix local.rebar --force
+
+# Prepare app directory
+WORKDIR /app
+
+# Copy compiled build
+COPY --from=build /app/_build /app/_build
+COPY --from=build /app/deps /app/deps
+
+# Copy application
 COPY . .
 
-# Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/api
+# Set environment
+ENV MIX_ENV=dev
 
-# Stage 2: Runtime
-FROM alpine:latest
+# Expose Phoenix port
+EXPOSE 4000
 
-# Install ca-certificates for HTTPS requests
-RUN apk --no-cache add ca-certificates tzdata
-
-# Set timezone
-ENV TZ=Asia/Tokyo
-
-# Create app user
-RUN addgroup -g 1000 app && \
-    adduser -D -u 1000 -G app app
-
-WORKDIR /home/app
-
-# Copy binary from builder
-COPY --from=builder /app/main .
-COPY --from=builder /app/config ./config
-
-# Change ownership
-RUN chown -R app:app /home/app
-
-# Switch to app user
-USER app
-
-# Expose port
-EXPOSE 8080
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
-
-# Run the application
-CMD ["./main"]
+# Start the Phoenix server
+CMD ["mix", "phx.server"]
