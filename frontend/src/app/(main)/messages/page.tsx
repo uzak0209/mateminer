@@ -1,21 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import { MOCK_CHATS, MOCK_MESSAGES, CURRENT_USER } from "@/lib/mock-data";
+import {
+  MOCK_CHATS_UI,
+  MOCK_MESSAGES,
+  CURRENT_USER_CONTEXT
+} from "@/lib/mock-data";
 import { MessageBubble } from "@/components/features/chat/MessageBubble";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area"; // shadcn (npx shadcn-ui@latest add scroll-area)
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, MoreVertical, Phone, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function MessagesPage() {
-  const [selectedChatId, setSelectedChatId] = useState<string | null>(MOCK_CHATS[0].id);
+  // DBの chat_rooms.id を管理
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(MOCK_CHATS_UI[0].id);
   const [inputText, setInputText] = useState("");
 
-  // 選択中のスレッドデータ
-  const activeChat = MOCK_CHATS.find((c) => c.id === selectedChatId);
+  // 選択中のスレッドデータ (UI用結合データ)
+  const activeChat = MOCK_CHATS_UI.find((c) => c.id === selectedRoomId);
+
+  // 選択中のルームのメッセージのみをフィルタリング
+  const activeMessages = MOCK_MESSAGES.filter(
+    (msg) => msg.chatRoomId === selectedRoomId
+  );
 
   return (
     <div className="container mx-auto py-6 px-4 h-[calc(100vh-64px)] max-w-6xl">
@@ -24,7 +34,7 @@ export default function MessagesPage() {
         {/* === 左側：チャットリスト === */}
         <div className={cn(
           "w-full md:w-80 border-r flex flex-col bg-gray-50/50",
-          selectedChatId ? "hidden md:flex" : "flex" // スマホ: チャット選択中はリストを隠す（簡易対応）
+          selectedRoomId ? "hidden md:flex" : "flex"
         )}>
           <div className="p-4 border-b bg-white">
             <h2 className="font-bold text-lg">メッセージ</h2>
@@ -32,19 +42,19 @@ export default function MessagesPage() {
 
           <ScrollArea className="flex-1">
             <div className="flex flex-col">
-              {MOCK_CHATS.map((chat) => (
+              {MOCK_CHATS_UI.map((chat) => (
                 <button
                   key={chat.id}
-                  onClick={() => setSelectedChatId(chat.id)}
+                  onClick={() => setSelectedRoomId(chat.id)}
                   className={cn(
                     "flex items-center gap-3 p-4 text-left transition-colors hover:bg-gray-100",
-                    selectedChatId === chat.id && "bg-blue-50 hover:bg-blue-50"
+                    selectedRoomId === chat.id && "bg-blue-50 hover:bg-blue-50"
                   )}
                 >
                   <div className="relative">
                     <Avatar>
-                      <AvatarImage src={chat.partner.avatarUrl} />
-                      <AvatarFallback>{chat.partner.profile?.nickname[0]}</AvatarFallback>
+                      <AvatarImage src={chat.partner.profile.avatarUrl} />
+                      <AvatarFallback>{chat.partner.profile.nickname[0]}</AvatarFallback>
                     </Avatar>
                     {chat.unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
@@ -54,13 +64,15 @@ export default function MessagesPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-baseline mb-1">
-                      <span className="font-bold text-sm truncate">{chat.partner.profile?.nickname}</span>
+                      <span className="font-bold text-sm truncate">
+                        {chat.partner.profile.nickname}
+                      </span>
                       <span className="text-[10px] text-gray-400" suppressHydrationWarning>
-                        {new Date(chat.lastMessage.timestamp).toLocaleDateString()}
+                        {chat.lastMessage?.insertedAt.toLocaleDateString()}
                       </span>
                     </div>
                     <p className="text-xs text-gray-500 truncate">
-                      {chat.lastMessage.content}
+                      {chat.lastMessage?.content}
                     </p>
                   </div>
                 </button>
@@ -73,7 +85,7 @@ export default function MessagesPage() {
         {activeChat ? (
           <div className={cn(
             "flex-1 flex flex-col bg-white",
-            !selectedChatId ? "hidden md:flex" : "flex"
+            !selectedRoomId ? "hidden md:flex" : "flex"
           )}>
             {/* トークヘッダー */}
             <div className="h-16 border-b flex items-center justify-between px-6 bg-white shrink-0">
@@ -81,16 +93,18 @@ export default function MessagesPage() {
                 {/* スマホ用: 戻るボタン */}
                 <button
                   className="md:hidden text-blue-600 text-sm mr-2"
-                  onClick={() => setSelectedChatId(null)}
+                  onClick={() => setSelectedRoomId(null)}
                 >
                   ←
                 </button>
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src={activeChat.partner.avatarUrl} />
-                  <AvatarFallback>{activeChat.partner.profile?.nickname[0]}</AvatarFallback>
+                  <AvatarImage src={activeChat.partner.profile.avatarUrl} />
+                  <AvatarFallback>{activeChat.partner.profile.nickname[0]}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="font-bold text-sm">{activeChat.partner.profile?.nickname}</h3>
+                  <h3 className="font-bold text-sm">
+                    {activeChat.partner.profile.nickname}
+                  </h3>
                   <span className="text-xs text-green-600 flex items-center gap-1">
                     <span className="w-2 h-2 rounded-full bg-green-500"></span>
                     オンライン
@@ -107,21 +121,24 @@ export default function MessagesPage() {
             {/* メッセージエリア */}
             <div className="flex-1 overflow-y-auto p-4 bg-slate-50">
               <div className="space-y-6">
-                {/* 日付区切りの例 */}
+                {/* 日付区切りの例 (簡易実装) */}
                 <div className="flex justify-center my-4">
                   <span className="text-xs bg-gray-200 text-gray-600 px-3 py-1 rounded-full">
+                    {/* 実際のアプリでは日付比較ロジックが必要 */}
                     2025年12月5日
                   </span>
                 </div>
 
-                {MOCK_MESSAGES.map((msg) => (
+                {activeMessages.map((msg) => (
                   <MessageBubble
                     key={msg.id}
                     content={msg.content}
-                    timestamp={msg.timestamp}
-                    isCurrentUser={msg.senderId === CURRENT_USER.id}
-                    senderName={activeChat.partner.profile?.nickname}
-                    senderAvatar={activeChat.partner.avatarUrl}
+                    // MessageBubbleコンポーネント側でDateを受け取るように修正が必要、
+                    // または文字列変換: msg.insertedAt.toISOString()
+                    timestamp={msg.insertedAt.toISOString()}
+                    isCurrentUser={msg.senderUserId === CURRENT_USER_CONTEXT.user.id}
+                    senderName={activeChat.partner.profile.nickname}
+                    senderAvatar={activeChat.partner.profile.avatarUrl}
                   />
                 ))}
               </div>

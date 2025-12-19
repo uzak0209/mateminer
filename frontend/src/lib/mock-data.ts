@@ -1,190 +1,237 @@
 // src/lib/mock-data.ts
-import { ChatThread, Message ,MatchCandidate, PropertyCandidate, User } from '@/types';
+import {
+  User, Profile, Lifestyle, PropertyPreference,
+  ChatRoom, ChatRoomMember, Message,
+  MatchedPair, UserType, Gender
+} from '@/types';
 
-// ログイン中の自分（大学生Aくん）
-export const CURRENT_USER: User = {
+// ==============================================
+// 1. Core Entities (Users & Profiles)
+// ==============================================
+
+const NOW = new Date();
+const ONE_HOUR_AGO = new Date(NOW.getTime() - 60 * 60 * 1000);
+const YESTERDAY = new Date(NOW.getTime() - 24 * 60 * 60 * 1000);
+
+// 現在のユーザー (Me)
+const user1: User = {
   id: 'u1',
   email: 'student_a@meiji.ac.jp',
-  isUniversityEmail: true,
-  trustScore: 85, // 学生証認証済みなどで高い
+  passwordHash: 'hashed_pw',
+  phoneNumber: '090-0000-0000',
   phoneVerified: true,
-  studentVerified: true,
-  avatarUrl: '/avatars/me.jpg', // 仮
-  profile: {
-    nickname: 'Kenta',
-    age: 20,
-    gender: 'male',
-    userType: 'student',
-    universityName: '明治大学',
-    faculty: '政治経済学部',
-    grade: 2,
-    campus: '和泉キャンパス',
-    bio: '明治大学の2年生です。家賃を抑えるためにルームシェアしたいです。基本静かに過ごしたい派です。',
-    tags: ['映画鑑賞', 'カフェ巡り', 'フットサル'],
-  },
-  lifestyle: {
-    sleepSchedule: 'night', // 夜型
-    cleanlinessLevel: 3, // 普通
-    smoking: 'none',
-    hasPet: false,
-    guestFrequency: 'sometimes',
-    noiseTolerance: 3,
-    socializingPreference: 3, // 適度に交流
-    cookingFrequency: 'sometimes',
-  },
-  preferences: {
-    minRent: 40000,
-    maxRent: 60000,
-    preferredAreas: ['東京都世田谷区', '東京都杉並区'],
-    preferredStations: ['明大前', '下高井戸'],
-    roomTypes: ['2DK', '2LDK'],
-    moveInTiming: '1-3months',
-  }
+  emailVerified: true,
+  isUniversityEmail: true,
+  trustScore: 85,
+  status: 'active',
+  lastLoginAt: NOW,
+  insertedAt: YESTERDAY,
+  updatedAt: NOW
 };
 
-// 検索結果に出てくる候補者リスト
-export const MOCK_CANDIDATES: MatchCandidate[] = [
+const profile1: Profile = {
+  id: 'p1',
+  userId: 'u1',
+  nickname: 'Kenta',
+  age: 20,
+  gender: 'male',
+  userType: 'student',
+  universityName: '明治大学',
+  faculty: '政治経済学部',
+  grade: 2,
+  campus: '和泉キャンパス',
+  bio: '明治大学の2年生です。家賃を抑えるためにルームシェアしたいです。',
+  avatarUrl: '/avatars/me.jpg', // 仮パス
+  insertedAt: YESTERDAY,
+  updatedAt: NOW
+};
+
+// 相手ユーザー1 (Sho)
+const user2: User = {
+  id: 'u2',
+  email: 'sho@example.com',
+  passwordHash: 'hashed_pw',
+  phoneNumber: '090-1111-1111',
+  phoneVerified: true,
+  emailVerified: true,
+  isUniversityEmail: true,
+  trustScore: 92,
+  status: 'active',
+  lastLoginAt: NOW,
+  insertedAt: YESTERDAY,
+  updatedAt: NOW
+};
+
+const profile2: Profile = {
+  id: 'p2',
+  userId: 'u2',
+  nickname: 'Sho',
+  age: 21,
+  gender: 'male',
+  userType: 'student',
+  universityName: '明治大学',
+  faculty: '法学部',
+  grade: 3,
+  campus: '和泉キャンパス',
+  bio: '同じ大学の人と住みたいです！掃除は得意です。',
+  avatarUrl: undefined, // アバターなしの場合のフォールバックテスト用
+  insertedAt: YESTERDAY,
+  updatedAt: NOW
+};
+
+// 相手ユーザー2 (Mike)
+const user3: User = {
+  id: 'u3',
+  email: 'mike@example.com',
+  passwordHash: 'hashed_pw',
+  phoneNumber: '090-2222-2222',
+  phoneVerified: true,
+  emailVerified: false,
+  isUniversityEmail: false,
+  trustScore: 40,
+  status: 'active',
+  lastLoginAt: YESTERDAY,
+  insertedAt: YESTERDAY,
+  updatedAt: YESTERDAY
+};
+
+const profile3: Profile = {
+  id: 'p3',
+  userId: 'u3',
+  nickname: 'Mike',
+  age: 24,
+  gender: 'male',
+  userType: 'graduate',
+  universityName: '東京大学大学院',
+  bio: '研究で忙しいので、家では寝るだけです。',
+  insertedAt: YESTERDAY,
+  updatedAt: YESTERDAY
+};
+
+// ==============================================
+// 2. Chat Data (Rooms & Messages)
+// ==============================================
+
+// チャットルーム
+export const MOCK_CHAT_ROOMS: ChatRoom[] = [
   {
-    ...CURRENT_USER, // 構造をコピーして上書き
-    id: 'u2',
-    email: 'test2@example.com',
-    trustScore: 92,
-    profile: {
-      nickname: 'Sho',
-      age: 21,
-      gender: 'male',
-      userType: 'student',
-      universityName: '明治大学',
-      faculty: '法学部',
-      grade: 3,
-      campus: '和泉キャンパス',
-      bio: '同じ大学の人と住みたいです！掃除は得意です。',
-      tags: ['サッカー', '映画鑑賞', '料理'], // 共通タグあり
-    },
-    compatibilityScore: 95, // ★超高相性
-    compatibilityDetails: {
-      lifestyleMatch: 98,
-      valueMatch: 90,
-      tagsMatch: ['映画鑑賞'],
-    },
-    preferences: {
-      minRent: 45000,
-      maxRent: 65000,
-      preferredAreas: ['東京都世田谷区'],
-      preferredStations: ['明大前'],
-      roomTypes: ['2DK'],
-      moveInTiming: '1-3months',
-    }
+    id: 'room1',
+    name: 'Sho & Kenta',
+    roomType: 'match_pair',
+    matchedPairId: 'mp1', // 仮のID
+    lastMessageAt: NOW,
+    isArchived: false,
+    insertedAt: YESTERDAY,
+    updatedAt: NOW
   },
   {
-    ...CURRENT_USER,
-    id: 'u3',
-    email: 'test3@example.com',
-    trustScore: 40,
-    profile: {
-      nickname: 'Mike',
-      age: 24,
-      gender: 'male',
-      userType: 'graduate', // 大学院生
-      universityName: '東京大学大学院',
-      bio: '研究で忙しいので、家では寝るだけです。',
-      tags: ['プログラミング', '読書'],
-    },
-    compatibilityScore: 45, // ★相性低め
-    compatibilityDetails: {
-      lifestyleMatch: 40,
-      valueMatch: 50,
-      tagsMatch: [],
-    },
+    id: 'room2',
+    name: 'Mike & Kenta',
+    roomType: 'match_pair',
+    matchedPairId: 'mp2',
+    lastMessageAt: YESTERDAY,
+    isArchived: false,
+    insertedAt: YESTERDAY,
+    updatedAt: YESTERDAY
   }
 ];
 
-// 共有物件リスト（マッチング後）
-export const MOCK_SHARED_PROPERTIES: PropertyCandidate[] = [
-  {
-    id: 'p1',
-    sourceUrl: 'https://suumo.jp/...',
-    title: 'メゾン明大前 202号室',
-    rent: 110000, // 2人で割る想定
-    address: '東京都世田谷区松原...',
-    stationName: '明大前駅',
-    walkMinutes: 5,
-    imageUrl: 'https://via.placeholder.com/300x200?text=Room+Image',
-    myRating: 4,
-    partnerRating: 5,
-    myComment: '駅近で最高だけど、少し古いかも？',
-    partnerComment: '家賃予算内だし、広くていいね！',
-  },
-  {
-    id: 'p2',
-    sourceUrl: 'https://homes.co.jp/...',
-    title: 'サンハイツ下高井戸',
-    rent: 98000,
-    address: '東京都世田谷区赤堤...',
-    stationName: '下高井戸駅',
-    walkMinutes: 8,
-    imageUrl: 'https://via.placeholder.com/300x200?text=Room+Image+2',
-    myRating: 5,
-    partnerRating: 3,
-    myComment: 'ここが一番コスパ良いと思う',
-    partnerComment: '日当たりが気になる...',
-  }
-];
+// メッセージ (u1 と u2 のやり取り)
 export const MOCK_MESSAGES: Message[] = [
   {
     id: "m1",
-    senderId: "u2", // Shoくん (相手)
+    chatRoomId: "room1",
+    senderUserId: "u2", // Sho
     content: "はじめまして！プロフィール見ました。僕も明大前周辺で探していて、ぜひお話ししたいです。",
-    timestamp: "2025-12-05T10:00:00.000Z",
-    isRead: true,
+    messageType: 'text',
+    insertedAt: new Date(NOW.getTime() - 24 * 60 * 60 * 1000), // 1日前
+    updatedAt: new Date(NOW.getTime() - 24 * 60 * 60 * 1000),
+    isFlagged: false,
+    isDeleted: false
   },
   {
     id: "m2",
-    senderId: "u1", // Kentaくん (自分)
+    chatRoomId: "room1",
+    senderUserId: "u1", // Me
     content: "こんにちは！マッチありがとうございます。ぜひぜひ。家賃予算も近そうですね。",
-    timestamp: "2025-12-05T10:05:00.000Z",
-    isRead: true,
+    messageType: 'text',
+    insertedAt: new Date(NOW.getTime() - 23 * 60 * 60 * 1000),
+    updatedAt: new Date(NOW.getTime() - 23 * 60 * 60 * 1000),
   },
   {
     id: "m3",
-    senderId: "u2",
+    chatRoomId: "room1",
+    senderUserId: "u2",
     content: "そうですね！6万円以下だと助かります。ちなみに自炊はよくされますか？",
-    timestamp: "2025-12-05T10:10:00.000Z",
-    isRead: true,
+    messageType: 'text',
+    insertedAt: new Date(NOW.getTime() - 22 * 60 * 60 * 1000),
+    updatedAt: new Date(NOW.getTime() - 22 * 60 * 60 * 1000),
   },
   {
     id: "m4",
-    senderId: "u1",
+    chatRoomId: "room1",
+    senderUserId: "u1",
     content: "週3くらいです！でも掃除は当番制とかできっちり決めたい派です。",
-    timestamp: "2025-12-05T10:12:00.000Z",
-    isRead: true,
+    messageType: 'text',
+    insertedAt: new Date(NOW.getTime() - 21 * 60 * 60 * 1000),
+    updatedAt: new Date(NOW.getTime() - 21 * 60 * 60 * 1000),
   },
   {
     id: "m5",
-    senderId: "u2",
+    chatRoomId: "room1",
+    senderUserId: "u2",
     content: "僕もキレイ好きなんで助かります！今週末とか内見行けたりしますか？良さげな物件いくつかピックアップしました。",
-    timestamp: "2025-12-06T09:30:00.000Z",
-    isRead: false,
+    messageType: 'text',
+    insertedAt: ONE_HOUR_AGO, // 1時間前
+    updatedAt: ONE_HOUR_AGO,
   },
+  // u3 とのメッセージ (返信なし)
+  {
+    id: "m6",
+    chatRoomId: "room2",
+    senderUserId: "u3",
+    content: "研究室が忙しくて返信遅れました...",
+    messageType: 'text',
+    insertedAt: YESTERDAY,
+    updatedAt: YESTERDAY,
+  }
 ];
 
-export const MOCK_CHATS: ChatThread[] = [
+// ==============================================
+// 3. UI Helpers (Constructed Objects)
+// ==============================================
+
+// フロントエンドで使いやすいように結合した型
+export interface UIUserContext {
+  user: User;
+  profile: Profile;
+}
+
+export const CURRENT_USER_CONTEXT: UIUserContext = {
+  user: user1,
+  profile: profile1
+};
+
+// チャットリスト表示用の型定義（DB型には存在しないがUIで必要）
+export interface ChatThreadUI {
+  id: string; // chatRoomId
+  partner: UIUserContext;
+  lastMessage: Message;
+  unreadCount: number;
+}
+
+// データを結合してUI用リストを作成
+export const MOCK_CHATS_UI: ChatThreadUI[] = [
   {
-    id: "thread1",
-    partner: MOCK_CANDIDATES[0], // Shoくん
-    lastMessage: MOCK_MESSAGES[MOCK_MESSAGES.length - 1],
+    id: 'room1',
+    partner: { user: user2, profile: profile2 },
+    lastMessage: MOCK_MESSAGES.filter(m => m.chatRoomId === 'room1').pop()!,
     unreadCount: 1,
   },
   {
-    id: "thread2",
-    partner: MOCK_CANDIDATES[1], // Mikeくん
-    lastMessage: {
-      id: "m_temp",
-      senderId: "u3",
-      content: "研究室が忙しくて返信遅れました...",
-      timestamp: "2025-12-04T18:00:00.000Z",
-      isRead: true,
-    },
+    id: 'room2',
+    partner: { user: user3, profile: profile3 },
+    lastMessage: MOCK_MESSAGES.filter(m => m.chatRoomId === 'room2').pop()!,
     unreadCount: 0,
-  },
+  }
 ];
